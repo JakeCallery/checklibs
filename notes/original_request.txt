@@ -1,0 +1,1 @@
+@Jake, how much effort would be needed in parsing output of something like a rpm -qa for libraries and versions and cross referencing with our list of prereqs (libraries and versions)
