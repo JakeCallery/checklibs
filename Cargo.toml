@@ -1,0 +1,6 @@
+[package]
+name = "checklibs"
+version = "0.1.0"
+authors = ["Jake Callery <jcallery@subvoicestudios.com>"]
+
+[dependencies]

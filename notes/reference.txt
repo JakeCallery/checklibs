@@ -1,0 +1,40 @@
+
+
+---------------------------------------------------------------------------------------
+https://stackoverflow.com/questions/30801031/read-a-file-and-get-an-array-of-strings
+
+Read a file and get an array of strings
+
+Rust arrays have a fixed length, known at compile time, so I assume you really mean "vector". I would write it like this:
+
+use std::io::prelude::*;
+use std::io::BufReader;
+use std::fs::File;
+use std::path::Path;
+
+fn lines_from_file<P>(filename: P) -> Vec<String>
+where
+    P: AsRef<Path>,
+{
+    let file = File::open(filename).expect("no such file");
+    let buf = BufReader::new(file);
+    buf.lines()
+        .map(|l| l.expect("Could not parse line"))
+        .collect()
+}
+
+// ---
+
+fn main() {
+    let lines = lines_from_file("/etc/hosts");
+    for line in lines {
+        println!("{:?}", line);
+    }
+}
+As in the other answer, it's worth it to use the generic type for the filename.
+Result::expect shortens the panic on Err.
+BufRead::lines handles multiple types of newlines, not just "\n".
+BufRead::lines also gives you separately allocated Strings, instead of one big glob.
+There's no reason to collect to a temporary variable just to return it. There's especially no reason to repeat the type (Vec<String>).
+
+--------------------------------------------------------------------------------------------------------------
