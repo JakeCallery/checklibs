@@ -38,3 +38,29 @@ BufRead::lines also gives you separately allocated Strings, instead of one big g
 There's no reason to collect to a temporary variable just to return it. There's especially no reason to repeat the type (Vec<String>).
 
 --------------------------------------------------------------------------------------------------------------
+
+
+As BurntSushi said, you could just use the lines() iterator. But, to address your question as-is:
+
+You should probably read Error Handling in Rust; those unwrap()s should be turned into try!s, with the function's result becoming a Result<Vec<String>, E> for some reasonable E.
+
+Again, lines() iterator. The other thing you can do is read the whole file into a String and return that; there's a lines() iterator for strings as well.
+
+This one you can't do anything about: file_contents owns its contents, and you can't split them up into multiple, owned Strings. The only thing you can do is borrow the contents of each line, then convert that into a new String. That said, the way you've put this implies that you believe creating a &str is expensive; it isn't. It's literally just computing a pair of offsets and returning those. A &str slice is effectively equivalent to (*const u8, usize).
+
+Here's a modified version which does basically the same thing:
+
+use std::io::{self, BufRead};
+use std::path::Path;
+use std::fs::File;
+
+fn lines_from_file<P>(filename: P) -> Result<io::Lines<io::BufReader<File>>, io::Error>
+where
+    P: AsRef<Path>,
+{
+    let mut file = try!(File::open(filename));
+    Ok(io::BufReader::new(file).lines())
+}
+One other change I made: filename is now a generic P: AsRef<Path>, because that's what File::open wants, so it will accept more types without needing conversion.
+
+----------------------------------------------------------------------------------------------------------------------
