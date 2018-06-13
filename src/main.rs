@@ -27,19 +27,30 @@ fn main() {
     let cur_path_disp: Display = cur_path.display();
     println!("CWD: {}", cur_path_disp);
 
-    println!("Opening File");
-    let file: File = match File::open(&cust_libs_path) {
+    println!("Opening Customer File");
+    let cust_libs_file: File = match File::open(&cust_libs_path) {
         Err(why) => panic!("Couldn't read {}: {}", cust_libs_display, why.description()),
-        Ok(file) => file,
+        Ok(cust_libs_file) => cust_libs_file,
     };
 
-    println!("Saving lines to memory");
-    let lines_itr: Vec<String> = lines_from_file(&file);
+    println!("Opening Lib List");
+    let req_libs_file: File = match File::open(&req_libs_path) {
+        Err(why) => panic!("Couldn't Read {}: {}", req_libs_display, why.description()),
+        Ok(req_libs_file) => req_libs_file,
+    };
 
-/*
-    for line in lines_itr {
+    println!("Saving Customer lines to memory");
+    let cust_lines_itr: Vec<String> = lines_from_file(&cust_libs_file);
+
+    println!("Saving Required lines to memory");
+    let req_lines_itr: Vec<String> = lines_from_file(&req_libs_file);
+
+    for line in cust_lines_itr {
         println!("{:?}", line);
     }
-*/
+
+    for line in req_lines_itr {
+        println!("{:?}", line);
+    }
 
 }
