@@ -35,16 +35,18 @@ fn main() {
         match ap.parse_args() {
             Ok(()) => {},
             Err(err) => {
-                println!("Error: {:?}", err);
+                println!("Argument Error: {:?}", err);
                 std::process::exit(err);
             }
         }
-    }
+    }//argparse scope
 
-    let cust_libs_path: &Path = Path::new("./src/rpmoutput.txt");
+    //let cust_libs_path: &Path = Path::new("./src/rpmoutput.txt");
+    let cust_libs_path: &Path = Path::new(&cust_lib_file_path);
     let cust_libs_display: Display = cust_libs_path.display();
 
-    let req_libs_path: &Path = Path::new("./src/reqlibs_19.1.txt");
+    //let req_libs_path: &Path = Path::new("./src/reqlibs_19.1.txt");
+    let req_libs_path: &Path = Path::new(&req_lib_file_path);
     let req_libs_display: Display = req_libs_path.display();
 
     let cur_path: PathBuf = env::current_dir().unwrap();
@@ -71,9 +73,6 @@ fn main() {
     #[allow(unused_variables)]
     let req_lines_itr: Vec<String> = lines_from_file(&req_libs_file);
 
-
-
-/*
     for line in cust_lines_itr {
         println!("{:?}", line);
     }
@@ -81,5 +80,5 @@ fn main() {
     for line in req_lines_itr {
         println!("{:?}", line);
     }
-*/
+
 }
