@@ -8,8 +8,6 @@ compat-libstdc++-44
 libstdc++
 libstdc++
 gcc-c++
-compat-libstdc++-33
-compat-libstdc++-44
 libstdc++-devel
 libstdc++-devel
 compat-gcc-34
@@ -18,4 +16,4 @@ libXxf86vm
 libSM
 libXt
 xorg-x11-fonts-ISO8859-1-75dpi
-glibc-2.12-1
+glibc

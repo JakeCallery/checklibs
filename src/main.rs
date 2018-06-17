@@ -73,12 +73,28 @@ fn main() {
     #[allow(unused_variables)]
     let req_lines_itr: Vec<String> = lines_from_file(&req_libs_file);
 
-    for line in cust_lines_itr {
-        println!("{:?}", line);
+    let mut num_lines_not_found = 0;
+
+    for req_line in &req_lines_itr{
+        let mut line_found: bool = false;
+
+        for cust_line in &cust_lines_itr {
+            if cust_line.to_lowercase().contains(&req_line.to_lowercase()) {
+                line_found = true;
+                break
+            }
+        }
+
+        if !line_found {
+            println!("Not Found: {:?}", &req_line);
+            num_lines_not_found += 1;
+        }
+
     }
 
-    for line in req_lines_itr {
-        println!("{:?}", line);
+    if num_lines_not_found > 0 {
+        println!("Num Libs Not Found: {}", num_lines_not_found);
+    } else {
+        println!("All Libs Found");
     }
-
 }
